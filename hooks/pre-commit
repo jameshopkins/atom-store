@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+npm run flow || { exit 1; }
+npm run lint || { exit 1; }
+npm test || { exit 1; }

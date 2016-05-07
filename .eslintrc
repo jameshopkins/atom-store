@@ -1,0 +1,15 @@
+{
+  "env": {
+    "es6": true,
+    "mocha": true,
+    "node": true
+  },
+  "extends": "airbnb",
+  "parser": "babel-eslint",
+  "globals": {
+    "expect": false,
+    "spy": false,
+    "stub": false,
+    "injectr": false
+  }
+}
