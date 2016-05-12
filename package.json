@@ -1,6 +1,6 @@
 {
   "name": "atom-store",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A Clojure-inspired atom implementation with configurability for external persistence",
   "main": "dist/atom.js",
   "author": {
