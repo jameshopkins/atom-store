@@ -38,7 +38,6 @@
   ],
   "license": "MIT",
   "scripts": {
-    "postinstall": "if [ -z \"$CI\" ]; then cd .git/hooks && ln -sf ../../hooks/* ; fi",
     "lint": "eslint .",
     "compile": "babel src --out-dir dist",
     "test": "mocha --opts test/setup/mocha.opts",
