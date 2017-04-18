@@ -5,8 +5,8 @@ import { inMemory } from './plugins';
 export default (data : Object, createStore : Function = inMemory) => {
   const watchers = [];
 
-  const transition = (next, prev) =>
-    watchers.forEach(watcher => watcher(prev, next));
+  const transition = (...args) =>
+    watchers.forEach(watcher => watcher(...args));
 
   return {
     ...createStore(data, transition),

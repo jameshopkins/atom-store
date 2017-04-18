@@ -6,7 +6,7 @@ export const inMemory = (data : Object, transition : Function) => {
     write(fn : Function) {
       const oldState = this.read();
       const newState = fn(oldState);
-      transition(newState, oldState);
+      transition(oldState, newState);
       rootState = newState;
       return rootState;
     },
@@ -22,7 +22,7 @@ export const webStorage = ({ type, key } : Object, data : Object, transition : F
     write(fn: Function) {
       const oldState = this.read();
       const newState = fn(oldState);
-      transition(newState, oldState);
+      transition(oldState, newState);
       store.setItem(key, JSON.stringify(newState));
     },
     read() {
