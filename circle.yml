@@ -5,3 +5,11 @@ machine:
 dependencies:
   pre:
     - npm install -g npm
+
+test:
+  pre:
+    - npm run build
+  override:
+    - npm test
+    - mkdir -p $CIRCLE_TEST_REPORTS/reports
+    - cat tap-tests.log | tap-xunit > $CIRCLE_TEST_REPORTS/reports/tap-tests.xml
