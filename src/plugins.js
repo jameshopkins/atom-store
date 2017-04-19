@@ -2,31 +2,29 @@
 
 export const inMemory = (data : Object, transition : Function) => {
   let rootState = data;
-  return {
-    write(fn : Function) {
-      const oldState = this.read();
-      const newState = fn(oldState);
-      transition(oldState, newState);
-      rootState = newState;
-      return rootState;
-    },
-    read() {
-      return rootState;
-    },
+  const read = () => rootState;
+  const write = (fn : Function) => {
+    const oldState = read();
+    const newState = fn(oldState);
+    transition(oldState, newState);
+    rootState = newState;
+    return read();
   };
+  return { read, write };
 };
 
-export const webStorage = ({ type, key } : Object, data : Object, transition : Function) => {
+export const webStorage = (
+  { type, key } : Object,
+  data : Object,
+  transition : Function
+) => {
   const store = window[`${type}Storage`];
-  return {
-    write(fn: Function) {
-      const oldState = this.read();
-      const newState = fn(oldState);
-      transition(oldState, newState);
-      store.setItem(key, JSON.stringify(newState));
-    },
-    read() {
-      return JSON.parse(store.getItem(key));
-    },
+  const read = () => JSON.parse(store.getItem(key));
+  const write = (fn : Function) => {
+    const oldState = read();
+    const newState = fn(oldState);
+    transition(oldState, newState);
+    store.setItem(key, JSON.stringify(newState));
   };
+  return { read, write };
 };
