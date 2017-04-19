@@ -1,45 +1,36 @@
-/* eslint-disable no-unused-expressions */
+import tape from 'tape';
+import injectr from 'injectr';
+import { transform } from 'babel-core';
+import createAtom from '../src/atom';
 
-import createAtom from './../src/atom';
+injectr.onload = (filename, content) => transform(content, { filename }).code;
 
-describe('Atom', () => {
-  describe('Plugin architecture for external persisance', () => {
-    it('integration with a user-defined instance', () => {
-      const read = spy();
-      const write = spy();
+tape.test('Plugin architecture for external persisance', test => {
+  test.test('Integration with a user-defined instance', t => {
+    t.plan(4);
+    const initial = { hello: 'moo' };
 
-      const adapter = stub().returns({
-        read,
-        write,
-      });
+    const read = () => undefined;
+    const write = () => undefined;
 
-      const data = { hello: 'moo' };
-      const atom = createAtom(data, adapter);
-
-      expect(adapter).to.have.been.calledWith(data);
-
-      // Plugin read and write are exposed as first-class members
-      expect(atom.read).to.equal(read);
-      expect(atom.write).to.equal(write);
+    const atom = createAtom(initial, data => {
+      t.equal(data, initial, 'Adapter called with correct initial data');
+      return { read, write };
     });
-    it('uses a default in-memory instance if a user-defined one isn\'t defined', () => {
-      const inMemory = spy();
-      const createAtomInstance = injectr('../../src/atom.js', {
-        './plugins': {
-          inMemory,
-        },
-      });
-      createAtomInstance.default({ wahey: 'naughty' });
-      expect(inMemory).to.have.been.called;
-    });
+    t.notEqual(atom.read, atom.write, 'Read & write are different functions');
+    t.equal(atom.read, read, 'Read exposed as first-class member');
+    t.equal(atom.write, write, 'Write exposed as first-class member');
   });
-  describe('Watchers', () => {
-    it('calls watchers on write', () => {
-      const watcher = spy();
-      const atom = createAtom('hello');
-      atom.watch(watcher);
-      atom.write(() => 'nice');
-      expect(watcher).calledWithExactly('hello', 'nice');
-    });
+
+  test.test('Plugin architecture for external persisance', t => {
+    t.plan(1);
+    const initial = { foo: 'bar' };
+
+    const inMemory = data => {
+      t.equal(data, initial, 'inMemory plugin called if no other defined');
+    };
+
+    injectr('../src/atom.js', { './plugins': { inMemory } }, global)
+      .default(initial);
   });
 });

@@ -35,3 +35,22 @@ Invokes the given function whenever the atom value changes.
 
 ##### Arguments
 - `fn`: A function that is invoked whenever the atom value changes.
+
+## Test suite
+
+You may use the integrated test suite for your own custom plugins
+```js
+import tape from 'tape';
+import testPlugin from 'atom/testPlugin';
+import myPlugin from './myPlugin';
+
+// Non-curried
+tape('My custom plugin works', test => {
+  // Some setup & initial tests here
+  testPlugin(myPlugin, test);
+  // Some teardown & additional tests here
+});
+
+// Curried
+tape('My custom plugin works', testPlugin(myPlugin));
+```
