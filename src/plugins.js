@@ -1,7 +1,7 @@
 /* @flow */
 
-export const inMemory = (data : Object, transition : Function) => {
-  let rootState = data;
+export const inMemory = (initial : Object, transition : Function) => {
+  let rootState = initial;
   const read = () => rootState;
   const write = (fn : Function) => {
     const oldState = read();
@@ -15,7 +15,7 @@ export const inMemory = (data : Object, transition : Function) => {
 
 export const webStorage = (
   { type, key } : Object,
-  data : Object,
+  initial : Object,
   transition : Function
 ) => {
   const store = window[`${type}Storage`];
