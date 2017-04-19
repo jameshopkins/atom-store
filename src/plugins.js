@@ -25,6 +25,7 @@ export const webStorage = (
     const newState = fn(oldState);
     transition(oldState, newState);
     store.setItem(key, JSON.stringify(newState));
+    return read();
   };
   return { read, write };
 };

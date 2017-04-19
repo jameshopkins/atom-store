@@ -37,7 +37,8 @@ describe('Plugins', () => {
         },
       };
       const atom = createAtom('hello', webStorage.bind(null, { type: 'local', key: 'test' }));
-      atom.write(() => ({ changed: 'for the better' }));
+      const writeped = atom.write(() => ({ changed: 'for the better' }));
+      expect(writeped).to.not.be.undefined; // eslint-disable-line no-unused-expressions
       expect(setItem).to.have.been.calledWithExactly('test', '{"changed":"for the better"}');
     });
   });
