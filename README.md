@@ -30,7 +30,7 @@ Replaces the current atom value with the return value of the `fn` invocation.
 ##### Arguments
 - `fn`: A function whose return value is the new value of the store. The provided argument to `fn` is the current atom value (`currentValue`). You can pass any additional arguments to `fn` by binding them. For example, `fn.bind(null, firstArg, secondArg)`
 
-#### `.watch(fn(prevValue, nextValue) {})`
+#### `.watch(fn(nextValue, prevValue) {})`
 Invokes the given function whenever the atom value changes.
 
 ##### Arguments

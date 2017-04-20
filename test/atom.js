@@ -39,7 +39,7 @@ describe('Atom', () => {
       const atom = createAtom('hello');
       atom.watch(watcher);
       atom.write(() => 'nice');
-      expect(watcher).calledWithExactly('hello', 'nice');
+      expect(watcher).calledWithExactly('nice', 'hello');
     });
   });
 });
