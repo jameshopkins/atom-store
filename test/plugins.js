@@ -19,12 +19,15 @@ describe('Plugins', () => {
   describe('Web', () => {
     it('reads', () => {
       const getItem = stub().returns('{"hello":"wahey"}');
+      const setItem = spy();
       global.window = {
         localStorage: {
           getItem,
+          setItem,
         },
       };
-      const atom = createAtom('hello', webStorage.bind(null, { type: 'local', key: 'test' }));
+      const atom = createAtom('initial', webStorage.bind(null, { type: 'local', key: 'test' }));
+      expect(setItem).to.have.been.calledWithExactly('test', '"initial"');
       expect(atom.read()).to.deep.equal({ hello: 'wahey' });
     });
     it('writes', () => {
@@ -40,6 +43,19 @@ describe('Plugins', () => {
       const writeped = atom.write(() => ({ changed: 'for the better' }));
       expect(writeped).to.not.be.undefined; // eslint-disable-line no-unused-expressions
       expect(setItem).to.have.been.calledWithExactly('test', '{"changed":"for the better"}');
+    });
+    it('Use localStorage for default initial data', () => {
+      const getItem = stub().returns('{"hello":"wahey"}');
+      const setItem = spy();
+      global.window = {
+        localStorage: {
+          getItem,
+          setItem,
+        },
+      };
+      const atom = createAtom(undefined, webStorage.bind(null, { type: 'local', key: 'test' }));
+      expect(setItem).to.not.have.been.called; // eslint-disable-line no-unused-expressions
+      expect(atom.read()).to.deep.equal({ hello: 'wahey' });
     });
   });
 });

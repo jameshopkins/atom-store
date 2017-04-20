@@ -15,10 +15,13 @@ export const inMemory = (initial : Object, transition : Function) => {
 
 export const webStorage = (
   { type, key } : Object,
-  initial : Object,
+  initial : Object | void,
   transition : Function
 ) => {
   const store = window[`${type}Storage`];
+  if (initial !== undefined) {
+    store.setItem(key, JSON.stringify(initial));
+  }
   const read = () => JSON.parse(store.getItem(key));
   const write = (fn : Function) => {
     const oldState = read();
