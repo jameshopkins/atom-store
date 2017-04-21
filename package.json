@@ -39,6 +39,7 @@
   "license": "MIT",
   "scripts": {
     "lint": "eslint .",
+    "precompile": "npm test",
     "compile": "babel src --out-dir dist",
     "test": "mocha --opts test/setup/mocha.opts",
     "prepublish": "npm run compile",
