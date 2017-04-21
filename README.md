@@ -23,15 +23,17 @@ It must return two methods - `write` and `read`. These provide the transactional
 
 Returns the current atom value.
 
-#### `.write(fn(currentValue) {})`
+#### `.write(fn(currentValue) {}, ...context)`
 
 Replaces the current atom value with the return value of the `fn` invocation.
+You may also optionally provide any number of `context` arguments, which will be appended to `.watch` invocations.
 
 ##### Arguments
 - `fn`: A function whose return value is the new value of the store. The provided argument to `fn` is the current atom value (`currentValue`). You can pass any additional arguments to `fn` by binding them. For example, `fn.bind(null, firstArg, secondArg)`
 
-#### `.watch(fn(prevValue, nextValue) {})`
+#### `.watch(fn(nextValue, prevValue, ...context) {})`
 Invokes the given function whenever the atom value changes.
+Also provides any `context` arguments that were handed off by the initiating `.write` call.
 
 ##### Arguments
 - `fn`: A function that is invoked whenever the atom value changes.

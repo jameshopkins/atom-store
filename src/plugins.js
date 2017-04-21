@@ -3,10 +3,10 @@
 export const inMemory = (initial : Object, transition : Function) => {
   let rootState = initial;
   const read = () => rootState;
-  const write = (fn : Function) => {
+  const write = (fn : Function, ...context: any) => {
     const oldState = read();
     const newState = fn(oldState);
-    transition(oldState, newState);
+    transition(newState, oldState, ...context);
     rootState = newState;
     return read();
   };
@@ -23,10 +23,10 @@ export const webStorage = (
     store.setItem(key, JSON.stringify(initial));
   }
   const read = () => JSON.parse(store.getItem(key));
-  const write = (fn : Function) => {
+  const write = (fn : Function, ...context : any) => {
     const oldState = read();
     const newState = fn(oldState);
-    transition(oldState, newState);
+    transition(newState, oldState, ...context);
     store.setItem(key, JSON.stringify(newState));
     return read();
   };

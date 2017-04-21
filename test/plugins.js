@@ -9,8 +9,11 @@ describe('Plugins', () => {
     });
     it('writes', () => {
       const atom = createAtom('hello');
+      const watcher = spy();
+      atom.watch(watcher);
       const onChange = stub().returns('nice');
-      const writeped = atom.write(onChange);
+      const writeped = atom.write(onChange, 'test context');
+      expect(watcher).to.have.been.calledWithExactly('nice', 'hello', 'test context');
       expect(writeped).to.equal('nice');
       expect(onChange).to.have.been.calledWithExactly('hello');
       expect(atom.read()).to.equal('nice');
@@ -40,7 +43,12 @@ describe('Plugins', () => {
         },
       };
       const atom = createAtom('hello', webStorage.bind(null, { type: 'local', key: 'test' }));
-      const writeped = atom.write(() => ({ changed: 'for the better' }));
+      const watcher = spy();
+      atom.watch(watcher);
+      const writeped = atom.write(() => ({ changed: 'for the better' }), 'test context');
+      expect(watcher).to.have.been.calledWithExactly(
+        { changed: 'for the better' }, { hello: 'wahey' }, 'test context'
+      );
       expect(writeped).to.not.be.undefined; // eslint-disable-line no-unused-expressions
       expect(setItem).to.have.been.calledWithExactly('test', '{"changed":"for the better"}');
     });
