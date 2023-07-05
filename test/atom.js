@@ -41,5 +41,14 @@ describe('Atom', () => {
       atom.write(() => 'nice');
       expect(watcher).calledWithExactly('nice', 'hello');
     });
+
+    it('can un-watch', () => {
+      const watcher = spy();
+      const atom = createAtom('hello');
+      atom.watch(watcher);
+      atom.unwatch(watcher);
+      atom.write(() => 'nice');
+      expect(watcher).to.not.have.been.called;
+    });
   });
 });

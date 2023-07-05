@@ -37,3 +37,12 @@ Also provides any `context` arguments that were handed off by the initiating `.w
 
 ##### Arguments
 - `fn`: A function that is invoked whenever the atom value changes.
+
+#### `.unwatch(previousWatcher)`
+Stops calling the given function whenever the atom value changes.
+Returns true if the watcher was found and removed, or false if the
+watcher was not found.
+
+##### Arguments
+- `previousWatcherFn`: A function which was previously passed to
+  `.watch()`
